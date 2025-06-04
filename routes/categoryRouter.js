@@ -3,7 +3,7 @@ const router = express.Router();
 // const upload = require("../middleware/multer");
 const {
     createCategory,
-    // getAllCategory,
+    getAllCategory,
     // getSingleCategory,
     // updateCategory,
     // // categoryImage,
