@@ -11,7 +11,7 @@ const {createProduct,
 
 router.get("/getAllProduct",getAllProduct)
 router.get("/getSingleProduct",getSingleProduct)
-router.patch("/ProductImage/:id",upload.single("imageUrl"),ProductImage)
+router.post("/ProductImage/:id",upload.single("imageUrl"),ProductImage)
 router.put("/updateProduct/:id",upload.single("imageUrl"),updateProduct)
 router.post("/createProduct",upload.single("imageUrl"),createProduct);
 router.get("/get_product",get_product);

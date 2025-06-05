@@ -1,10 +1,9 @@
 const Store = require("../model/store");
-const mongoose = require("mongoose");
 
 exports.createStore = async (req, res) => {
   try {
     const {
-      imageUrl,
+
       business_name,
       business_type,
       Description,
@@ -16,7 +15,8 @@ exports.createStore = async (req, res) => {
       state,
       country,
       zip_code,
-      
+      user_id
+
     } = req.body;
     console.log(req.body);
     if (
@@ -31,13 +31,14 @@ exports.createStore = async (req, res) => {
       !city ||
       !state ||
       !country ||
-      !zip_code||
-      !imageUrl
+      !zip_code ||
+      !user_id
+
     ) {
       return res.status(400).json({ message: "fields are required" });
     }
     const data = await Store.create({
-      imageUrl: req.file ? req.file.path : null,
+      // imageUrl: req.file ? req.file.path : null,
       business_name,
       business_type,
       Description,
@@ -49,6 +50,7 @@ exports.createStore = async (req, res) => {
       state,
       country,
       zip_code,
+      user_id
     });
     console.log(data);
     return res
@@ -62,79 +64,78 @@ exports.createStore = async (req, res) => {
 };
 
 
-exports.getAllStore = async( req,res)=>{
-    try{
-        const data = await Store.find();
-        if(!data){
-            return res.status(400).json({message:"cannot find store"})
-        }
-        return res.status(200).json({data,message:"store found successfully"});
-    }catch(error){
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getAllStore = async (req, res) => {
+  try {
+    const data = await Store.find();
+    if (!data) {
+      return res.status(400).json({ message: "cannot find store" })
     }
+    return res.status(200).json({ data, message: "store found successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
 };
 
-exports.getSingleStore = async (req,res)=>{
-    try{
-        const {id} = req.query;
-        const  data = await Store.findOne({_id:id});
-        console.log(data);
-        if(!data){
-            return res.status(400).json({message:"cannot find store  with this id"});
-        }
-        return res.status(200).json({data,message:"store found successfully"});
-    }catch(error){
-        return res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getSingleStore = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const data = await Store.findOne({ _id: id });
+    console.log(data);
+    if (!data) {
+      return res.status(400).json({ message: "cannot find store  with this id" });
     }
-};
-
-
-exports.updateStore = async (req,res)=>{
-    try{
-        const id = req.params.id;
-        console.log(id);
-        
-        const storeDetails
-         = req.body;
-        console.log(req.body);
-        const data= await Store.findByIdAndUpdate(
-          {_id:id},
-          storeDetails,
-          { new: true }
-        );
-        console.log(data)
-        if (!data) {
-          return res.status(400).json({ message: "cannot find store with this id" });
-        }
-        return res.status(200).json({ data, message: "store updated successfully" });
-    }catch(error){
-        return res.status(500).json({ message: "Internal server error", error: error.message });
-    }
+    return res.status(200).json({ data, message: "store found successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error", error: error.message });
+  }
 };
 
 
+exports.updateStore = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
 
-exports.storeImage = async (req,res)=>{
-    try{
-        const id = req.params.id;
-        console.log(id);
-        
-        const { imageUrl }
-         = req.file;
-        console.log(req.file);
-        const data= await Store.findByIdAndUpdate(
-          {_id:id},
-          { imageUrl },
-          { new: true }
-        );
-        console.log(data)
-        if (!data) {
-          return res.status(400).json({ message: "cannot find store with this id" });
-        }
-        return res.status(200).json({ data, message: "store updated successfully" });
-    }catch(error){
-        return res.status(500).json({ message: "Internal server error", error: error.message });
+    const storeDetails
+      = req.body;
+    console.log(req.body);
+    const data = await Store.findByIdAndUpdate(
+      { _id: id },
+      storeDetails,
+      { new: true }
+    );
+    console.log(data)
+    if (!data) {
+      return res.status(400).json({ message: "cannot find store with this id" });
     }
+    return res.status(200).json({ data, message: "store updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error", error: error.message });
+  }
+};
+
+
+
+exports.storeImage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+
+    const imageUrl = req.file.path;
+
+    const data = await Store.findByIdAndUpdate(
+      { _id: id },
+      { imageUrl },
+      { new: true }
+    );
+    console.log(data)
+    if (!data) {
+      return res.status(400).json({ message: "cannot find store with this id" });
+    }
+    return res.status(200).json({ data, message: "store updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error", error: error.message });
+  }
 };
 
 exports.deleteStore = async (req, res) => {
@@ -143,7 +144,7 @@ exports.deleteStore = async (req, res) => {
     console.log(id);
     const { password } = req.body;
     console.log(password);
-    const data= await User.deleteOne(
+    const data = await User.deleteOne(
       id,
       { password },
       { new: true }
@@ -158,4 +159,3 @@ exports.deleteStore = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-    

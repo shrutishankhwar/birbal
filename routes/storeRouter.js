@@ -14,7 +14,7 @@ router.post("/createStore",upload.single("imageUrl"),createStore);
 router.get("/getAllStore",getAllStore);
 router.get("/getSingleStore",getSingleStore);
 router.put("/updateStore/:id",updateStore);
-router.patch("/storeImage/:id",upload.single("imageUrl"),storeImage);
+router.put("/storeImage/:id",upload.single("imageUrl"),storeImage);
 router.delete("/deleteStore/:id",deleteStore)
 
 module.exports = router;

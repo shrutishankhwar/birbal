@@ -1,4 +1,4 @@
-const mongoose= require("mongoose");
+
 const subCategory = require("../model/Subcategory");
 
 exports.createSubCategory = async (req, res) => {

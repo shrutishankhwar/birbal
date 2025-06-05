@@ -1,13 +1,10 @@
 const Product = require("../model/product");
-const { mongoose, Types } = require("mongoose");
 
 exports.createProduct = async (req, res) => {
   try {
     const {
       barcode,
       productName,
-      category,
-      subCategory,
       mrp,
       sellingPrice,
       unit,
@@ -22,8 +19,7 @@ exports.createProduct = async (req, res) => {
     const data = await Product.create({
       barcode,
       productName,
-      category,
-      subCategory,
+
       mrp,
       sellingPrice,
       unit,
@@ -64,8 +60,8 @@ exports.getAllProduct = async (req, res) => {
 
 exports.getSingleProduct = async (req, res) => {
   try {
-    const { id } = req.query;
-    const data = await Product.findOne({ _id: id });
+    const {id} = req.query;
+    const data = await Product.findOne({_id:id});
     console.log(data);
     if (!data) {
       return res
@@ -84,11 +80,11 @@ exports.ProductImage = async (req, res) => {
   try {
     const id = req.params.id;
     console.log(id);
-    const { imageUrl } = req.file;
+    const imageUrl = req.file.path;
     const data = await Product.updateOne(
-      { _id: id },
-      { image: imageUrl },
-      { new: true }
+      {_id:id},
+      {imageUrl},
+      {new:true}
     );
     if (!data) {
       return res
@@ -110,7 +106,7 @@ exports.updateProduct = async (req, res) => {
     const id = req.params.id;
     console.log(id);
     const productDetails = req.body;
-    const data = await Product.updateMany({ _id: id }, productDetails, {
+    const data = await Product.updateMany({_id:id}, productDetails, {
       new: true,
     });
     if (!data) {
@@ -130,7 +126,7 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const { id } = req.query;
+    const {id} = req.query;
     const data = await Product.findByIdAndDelete(id);
     if (!data) {
       return res
@@ -159,9 +155,9 @@ exports.get_product = async (req, res) => {
         },
       },
       {
-        $lookup:{
+        $lookup: {
           from: "subcategories",
-          localField: "_id",
+          localField: "subcategory_id",
           foreignField: "_id",
           as: "result"
         }

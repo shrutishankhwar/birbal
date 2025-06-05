@@ -1,17 +1,14 @@
-const mongoose= require("mongoose");
+
 const Category = require("../model/category");
 
 exports.createCategory = async (req, res) => {
     try{
-        const { name } = req.body;
-        console.log(name);
-        if (!name) {
+        const {name, subCategory_id} = req.body;
+        console.log(req.body);
+        if (!name || !subCategory_id) {
             return res.status(400).json({ message: "Category name is required" });
         }
-        const data = await Category.create({
-            name
-            // imageUrl: req.file ? req.file.path : null, // Use uploaded file path
-        });
+        const data = await Category.create({name, subCategory_id});
         console.log(data);
         return res.status(201).json({ data, message: "Category created successfully" });
     }catch(error){
@@ -64,23 +61,7 @@ exports.updateCategory = async (req, res) => {
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
-// exports.categoryImage = async (req, res) => {
-//     try {
-//         const { id } = req.query;
-//         const { imageUrl } = req.file;
-//         const data = await Category.findByIdAndUpdate(
-//             id,
-//             { imageUrl },
-//             { new: true }
-//         );
-//         if (!data) {
-//             return res.status(400).json({ message: "Cannot update category image" });
-//         }
-//         return res.status(200).json({ data, message: "Category image updated successfully" });
-//     } catch (error) {
-//         res.status(500).json({ message: "Internal server error", error: error.message });
-//     }
-// };
+
 exports.deleteCategory = async (req, res) => {
     try {
         const { id } = req.query;
