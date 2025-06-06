@@ -15,6 +15,15 @@ exports.createProduct = async (req, res) => {
       store_id,
       category_id,
     } = req.body;
+    if(!barcode || 
+      !productName || 
+      !mrp ||
+       !sellingPrice || 
+       !unit ||
+        !store_id || 
+        !category_id) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
     console.log(req.body);
     const data = await Product.create({
       barcode,
